@@ -1,39 +1,39 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class unification_problem {
 
     private static int no_of_predicates;
     private static int no_of_arguments[] = new int[10];
     private static int index1, index2;
-    private static char nouse;
     private static char predicate[] = new char[10];
     private static char arguments[][] = new char[10][10];
 
-    public static void main(String[] cli_args){
+    public static void main(String[] cli_args) throws IOException {
 
-        String choice = null;
+        String choice;
 
         do {
 
             System.out.println("\tUnification Problem");
             System.out.println("Enter the no of predicates : ");
 
-            Scanner scan = new Scanner(System.in);
-            no_of_predicates = scan.nextInt();
+            BufferedReader scan = new BufferedReader(new InputStreamReader(System.in));
+            no_of_predicates = Integer.parseInt(scan.readLine());
 
-            for (; index1 < no_of_predicates; index1++){
+            for (index1 = 0; index1 < no_of_predicates; index1++){
 
-                nouse = (scan.nextLine()).charAt(0);
                 System.out.println("Enter the predicate " + (index1 + 1) + " : ");
-                predicate[index1] = scan.nextLine().charAt(0);
+                predicate[index1] = scan.readLine().charAt(0);
+
                 System.out.println("Enter the no of Arguments for predicate " + predicate[index1] + " : ");
-                no_of_arguments[index1] = scan.nextInt();
+                no_of_arguments[index1] = Integer.parseInt(scan.readLine());
 
-                for (; index2 < no_of_arguments[index1]; index2++){
+                for (index2 = 0; index2 < no_of_arguments[index1]; index2++){
 
-                    nouse = scan.nextLine().charAt(0);
-                    System.out.println("Enter the argument " + index2 + 1 + " : ");
-                    arguments[index1][index2] = scan.nextLine().charAt(0);
+                    System.out.println("Enter the argument " + (index2 + 1) + " : ");
+                    arguments[index1][index2] = scan.readLine().charAt(0);
 
                 }
 
@@ -43,23 +43,25 @@ public class unification_problem {
             check_argument_predicate();
 
             System.out.println("Do you want to continue ? [yes] / [no] : ");
-            choice = scan.nextLine();
+            choice = scan.readLine();
 
         }while (choice.contains("yes"));
 
     }
 
-    public static void display(){
+    private static void display(){
+
+        System.out.println("\n\t=======PREDICATES ARE======");
 
         for (index1 = 0; index1 < no_of_predicates; index1++){
 
-            System.out.println("" + predicate[index1] + "(");
+            System.out.print("\n\t" + predicate[index1] + "(");
 
             for (index2 = 0; index2 < no_of_arguments[index1]; index2++){
 
                 System.out.print("" + arguments[index1][index2]);
 
-                if (index2 != no_of_arguments[index1] - 1) System.out.print(",");
+                if (index2 != (no_of_arguments[index1] - 1)) System.out.print(",");
 
             }
 
@@ -69,12 +71,12 @@ public class unification_problem {
 
     }
 
-    public static void check_argument_predicate() {
+    private static void check_argument_predicate() {
 
         boolean predicate_flag = false;
         boolean argument_flag = false;
 
-        for (index1 = 0; index1 < no_of_predicates; index1++){
+        for (index1 = 0; index1 < (no_of_predicates - 1); index1++){
 
             if (predicate[index1] != predicate[index1 + 1]){
 
@@ -89,7 +91,7 @@ public class unification_problem {
 
         if (!predicate_flag){
 
-            for (index1 = 0; index1 < no_of_arguments[index1] - 1; index1++){
+            for (index1 = 0; index1 < (no_of_arguments[index1] - 1); index1++){
 
                 if (no_of_arguments[index1] != no_of_arguments[index1 + 1]){
 
@@ -103,11 +105,11 @@ public class unification_problem {
 
         }
 
-        if (argument_flag == false && predicate_flag == false) unify();
+        if (!argument_flag && !predicate_flag) unify();
 
     }
 
-    public static void unify(){
+    private static void unify(){
 
         int flag = 0;
 
@@ -115,11 +117,11 @@ public class unification_problem {
 
             for (index2 = 0; index2 < no_of_arguments[index1]; index2++){
 
-                if (arguments[index1][index2] != arguments[index1 + 1][index2 + 1]){
+                if (arguments[index1][index2] != arguments[index1 + 1][index2]){
 
-                    if (flag == 0) System.out.println("Substition is \n");
+                    if (flag == 0) System.out.println("\n\t======SUBSTITUTION IS======");
 
-                    System.out.println("" + arguments[index1 + 1][index2] + " / " + arguments[index1][index2]);
+                    System.out.print("\n" + arguments[index1 + 1][index2] + " / " + arguments[index1][index2]);
                     flag++;
 
                 }
